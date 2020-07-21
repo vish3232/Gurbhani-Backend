@@ -25,3 +25,6 @@ app.use("/api/admin",require('./Routes/admin.routes'))
 app.use("/api",require('./Routes/payment.table'))
 app.use("/api",require('./Routes/notification.router'))
 app.set("port",port)
+app.listen( app.get( 'port' ), function() {
+    console.log( 'Node server is running on port ' + app.get( 'port' ));
+    });
