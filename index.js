@@ -7,7 +7,7 @@ const bodyparser = require('body-parser')
 
 const app=express()
 //database connection
-mongoose.connect('mongodb://localhost:27017/Gurabani-Book').then(() => {
+mongoose.connect('mongodb+srv://vishal:vishal50@cluster0-cyva8.mongodb.net/Gurbhani-Book?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true  }).then(() => {
     console.log("Connected to Database");
     }).catch((err) => {
         console.log("Not Connected to Database ERROR! ", err);
