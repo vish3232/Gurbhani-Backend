@@ -23,6 +23,6 @@ app.use("/api",require('./Routes/users.routes'))
 app.use("/api/admin",require('./Routes/admin.routes'))
 app.use("/api",require('./Routes/payment.table'))
 app.use("/api",require('./Routes/notification.router'))
-app.listen(process.env.port || 4000,function(){
-    console.log('now listening for request');
-})
+app.listen(process.env.PORT || 3000, function(){
+    console.log("Express server listening on port %d in %s mode", this.address().port, app.settings.env);
+  });
