@@ -20,10 +20,6 @@ app.use('/api',require('./Routes/csvFileUpload'))
 app.use('/api',require('./Routes/Gist_By_Sant_Singh'))
 app.use('/api',require('./Routes/Gist_Hindi_by_Sant_Singh_Hindi'))
 app.use("/api",require('./Routes/Gist_Sahib_Singh'))
-app.use("/api",require('./Routes/users.routes'))
-app.use("/api/admin",require('./Routes/admin.routes'))
-app.use("/api",require('./Routes/payment.table'))
-app.use("/api",require('./Routes/notification.router'))
 app.set("port",port)
 app.listen( app.get( 'port' ), function() {
     console.log( 'Node server is running on port ' + app.get( 'port' ));
