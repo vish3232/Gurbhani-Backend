@@ -4,6 +4,34 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const nodemailer = require('nodemailer');
+
+const multer = require('multer');
+
+const storage = multer.diskStorage({
+  destination: function(req, file, cb) {
+    cb(null, './uploads/');
+  },
+  filename: function(req, file, cb) {
+    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+  }
+});
+
+const fileFilter = (req, file, cb) => {
+  // reject a file
+  if (file.mimetype === 'image/jpg' || file.mimetype === 'image/png') {
+    cb(null, true);
+  } else {
+    cb(new Error('Only .jpeg or .png files are accepted'), false);
+  }
+};
+
+const upload = multer({
+  storage: storage,
+  limits: {
+    fileSize: 1024 * 1024 * 5
+  },
+  fileFilter: fileFilter
+});
 const sendgridTranport = require('nodemailer-sendgrid-transport');
 
 const transporter = nodemailer.createTransport(
@@ -15,14 +43,15 @@ const transporter = nodemailer.createTransport(
 );
 
 const User = require('../models/user.models');
-const checkAuth = require('../middlewere/Auth')
 const { getMaxListeners } = require('../models/user.models');
+
 
 /**************************************************************
  * @ROUTE       - /user/signup
  * @METHOD      - POST  
 ***************************************************************/
-router.post('/signup', (req, res, next) => {
+router.post('/signup',upload.single('profile_image'), (req, res, next) => {
+  console.log(req.body)
   User.find({email:req.body.email})
   .exec()
   .then(user =>{
@@ -44,6 +73,7 @@ router.post('/signup', (req, res, next) => {
             fname:req.body.fname,
             lname:req.body.lname,
             email:req.body.email,
+            profile_image:req.file.path,
             password:hash 
             }) ;
             user
@@ -76,8 +106,37 @@ router.post('/signup', (req, res, next) => {
 
     }
   })
- 
  });
+//  /**************************************************************
+//  * @ROUTE       - /user/upload_image
+//  * @METHOD      - POST  
+// ***************************************************************/
+// const upload = multer({ dest: 'uploads/' })
+// const singleUpload = upload.single('image');
+// router.post('/upload_image', upload.single('image'), async function (req, res) {
+//   const imagePath = path.join(__dirname, '/public/images');
+  
+//   if (!req.file) {
+//     res.status(401).json({error: 'Please provide an image'});
+//   }
+//   const filename = await fileUpload.save(req.file.buffer);
+//   return res.status(200).json({ name: filename });
+// });
+
+// module.exports = router;
+
+// const upload = multer({ dest: 'uploads/' })
+// const singleUpload = upload.single('image');
+// router.post('/upload_image',singleUpload , async ( req, res, next ) => {
+//   const newImage = new User({
+//     profile_image: req.file.profile_image
+//   });
+//   let save  = await newImage.save();
+//   if( save ){
+//       return  res.json({ profile_image : req.file.location });
+//   }
+// })
+
   // router.delete('/:userid',(req,res,next) =>{})
 
 /**************************************************************
