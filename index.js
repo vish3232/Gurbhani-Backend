@@ -3,6 +3,7 @@ const express=require('express')
 const mongoose=require('mongoose')
 const cors=require('cors')
 const bodyparser = require('body-parser')
+const app = express();
 
 //database connection
 mongoose.connect('mongodb+srv://vishal:vishal50@cluster0-cyva8.mongodb.net/Gurbhani-Book?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true  }).then(() => {
