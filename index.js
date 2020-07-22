@@ -3,8 +3,15 @@ const express=require('express')
 const mongoose=require('mongoose')
 const cors=require('cors')
 const bodyparser = require('body-parser')
+require('dotenv').config()
+
 
 const app=express()
+if (!config.get('jwtPrivateKey')) {
+    console.error('FATAL ERROR: jwtPrivateKey is not defined.');
+    process.exit(1);
+  }
+
 //database connection
 mongoose.connect('mongodb+srv://vishal:vishal50@cluster0-cyva8.mongodb.net/Gurbhani-Book?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true  }).then(() => {
     console.log("Connected to Database");
